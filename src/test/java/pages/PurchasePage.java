@@ -3,13 +3,17 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import utils.WaitUtils;
+
 public class PurchasePage {
 
     WebDriver driver;
+    WaitUtils wait;
 
     public PurchasePage(WebDriver driver)
     {
         this.driver = driver;
+        this.wait = new WaitUtils(driver);
     }
 
     By name = By.id("inputName");
@@ -17,33 +21,34 @@ public class PurchasePage {
     By city = By.id("city");
     By state = By.id("state");
     By zip = By.id("zipCode");
-    By cardType = By.id("cardType");
     By cardNumber = By.id("creditCardNumber");
     By month = By.id("creditCardMonth");
     By year = By.id("creditCardYear");
     By nameOnCard = By.id("nameOnCard");
     By purchaseBtn = By.cssSelector("input[type='submit']");
 
-    public void enterDetails()
+    public void enterDetails(String fullName, String fullAddress, String cityName,
+                             String stateName, String zipCode, String creditCardNumber,
+                             String cardMonth, String cardYear, String cardHolderName)
     {
-        driver.findElement(name).sendKeys("Roshni");
-        driver.findElement(address).sendKeys("Korba");
-        driver.findElement(city).sendKeys("Korba");
-        driver.findElement(state).sendKeys("Chhattisgar");
-        driver.findElement(zip).sendKeys("440011");
+        wait.waitForElementVisible(name).sendKeys(fullName);
+        driver.findElement(address).sendKeys(fullAddress);
+        driver.findElement(city).sendKeys(cityName);
+        driver.findElement(state).sendKeys(stateName);
+        driver.findElement(zip).sendKeys(zipCode);
+        driver.findElement(cardNumber).sendKeys(creditCardNumber);
 
-        driver.findElement(cardNumber).sendKeys("1234567812345678");
         driver.findElement(month).clear();
-        driver.findElement(month).sendKeys("12");
+        driver.findElement(month).sendKeys(cardMonth);
 
         driver.findElement(year).clear();
-        driver.findElement(year).sendKeys("2028");
+        driver.findElement(year).sendKeys(cardYear);
 
-        driver.findElement(nameOnCard).sendKeys("Roshni Gidwani");
+        driver.findElement(nameOnCard).sendKeys(cardHolderName);
     }
 
     public void purchaseFlight()
     {
-        driver.findElement(purchaseBtn).click();
+        wait.waitForElementClickable(purchaseBtn).click();
     }
 }
